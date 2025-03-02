@@ -66,3 +66,29 @@ class EMQXClientTools:
             
             self.logger.info("Client list retrieved successfully")
             return result 
+
+        @mcp.tool(name="get_mqtt_client", 
+                  description="Get detailed information about a specific MQTT client by client ID")
+        async def get_client_info(request):
+            """Handle get client info request
+            
+            Args:
+                request: MCP request containing client identifier
+                    - clientid: Client ID (required) - The unique identifier of the client to retrieve
+
+            Returns:
+                MCPResponse: Response object with detailed client information
+            """
+            self.logger.info("Handling get client info request")
+            
+            # Extract required client ID parameter
+            clientid = request.get("clientid")
+            if not clientid:
+                self.logger.error("Client ID is required but was not provided")
+                return {"error": "Client ID is required"}
+            
+            # Get client information from EMQX
+            result = await self.emqx_client.get_client_info(clientid)
+            
+            self.logger.info(f"Client info for '{clientid}' retrieved successfully")
+            return result 

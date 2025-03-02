@@ -129,3 +129,33 @@ class EMQXClient:
             except Exception as e:
                 self.logger.error(f"Error retrieving clients: {str(e)}")
                 return {"error": str(e)}
+                
+    async def get_client_info(self, clientid: str):
+        """
+        Get detailed information about a specific MQTT client by client ID.
+        
+        Uses the EMQX HTTP API to retrieve detailed information about a specific
+        client identified by its client ID.
+        
+        Args:
+            clientid (str): The unique identifier of the client to retrieve
+            
+        Returns:
+            dict: Response from the EMQX API containing client data or error information
+        """
+        url = f"{self.api_url}/clients/{clientid}"
+        
+        self.logger.info(f"Retrieving information for client ID: {clientid}")
+        
+        async with httpx.AsyncClient() as client:
+            try:
+                response = await client.get(
+                    url,
+                    headers=self._get_auth_header(),
+                    timeout=30
+                )
+                response.raise_for_status()
+                return self._handle_response(response)
+            except Exception as e:
+                self.logger.error(f"Error retrieving client info for {clientid}: {str(e)}")
+                return {"error": str(e)}
