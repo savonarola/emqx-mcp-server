@@ -77,35 +77,69 @@ Before using the EMQX MCP Server tools, you need to set up an EMQX cluster with 
 
 ## Running locally with the Claude Desktop App
 
-### Manual Installation
+### Option 1: Docker
+
+1. Install [Claude Desktop App](https://claude.ai/download) if you haven't done so yet.
+2. Pull the image:
+   ```
+   docker pull benniuji/emqx-mcp-server
+   ```
+3. Add the following to your `claude_desktop_config.json` file:
+    - On MacOS: `~/Library/Application\ Support/Claude/claude_desktop_config.json`
+    - On Windows: `%APPDATA%/Claude/claude_desktop_config.json`
+
+	```
+	{
+	  "mcpServers": {
+	    "EMQX_MCP_Server": {
+	      "command": "docker",
+	      "args": [
+	        "run",
+	        "-i",
+	        "--rm",
+	        "-e", "EMQX_API_URL=https://your-emqx-cloud-instance.com:8443/api/v5",
+	        "-e", "EMQX_API_KEY=<YOUR-API-KEY>",
+	        "-e", "EMQX_API_SECRET=<YOUR-API-SECRET>",
+	        "benniuji/emqx-mcp-server"
+	      ]
+	    }
+	  }
+	}
+	```
+    Note: Update the env variables:```EMQX_API_URL```, ```EMQX_API_KEY```, ```EMQX_API_SECRET```
+4. Open or Restart Claude Desktop App
+5. Try asking Claude to do something with the MQTT broker (e.g. ask it to publish an MQTT message to a topic). 
+
+### Option 2: Manual Installation
 
 First, ensure you have the `uv` executable installed. If not, you can install it by following the instructions [here](https://docs.astral.sh/uv/).
 
 1. Install [Claude Desktop App](https://claude.ai/download) if you haven't done so yet.
 2. Clone this repository.
 3. Add the following to your `claude_desktop_config.json` file:
-- On MacOS: `~/Library/Application\ Support/Claude/claude_desktop_config.json`
-- On Windows: `%APPDATA%/Claude/claude_desktop_config.json`
-```
-{
-  "mcpServers": {
-    "EMQX_MCP_Server": {
-      "command": "uv",
-      "args": [
-        "--directory",
-        "path/to/repo/src/emqx_mcp_server",
-        "run",
-        "emqx-mcp-server"
-      ],
-      "env":{
-        "EMQX_API_URL":"https://your-emqx-cloud-instance.com:8443/api/v5",
-        "EMQX_API_KEY":"<YOUR-API-KEY>",
-        "EMQX_API_SECRET":"<YOUR-API-SECRET>"
+    - On MacOS: `~/Library/Application\ Support/Claude/claude_desktop_config.json`
+    - On Windows: `%APPDATA%/Claude/claude_desktop_config.json`
+    ```
+    {
+      "mcpServers": {
+        "EMQX_MCP_Server": {
+          "command": "uv",
+          "args": [
+            "--directory",
+            "path/to/repo/src/emqx_mcp_server",
+            "run",
+            "emqx-mcp-server"
+          ],
+          "env":{
+            "EMQX_API_URL":"https://your-emqx-cloud-instance.com:8443/api/v5",
+            "EMQX_API_KEY":"<YOUR-API-KEY>",
+            "EMQX_API_SECRET":"<YOUR-API-SECRET>"
+          }
+        }
       }
     }
-  }
-}
-```
+    ```
+    Note: Update the env variables:```EMQX_API_URL```, ```EMQX_API_KEY```, ```EMQX_API_SECRET```
 4. Open or Restart Claude Desktop App
 5. Try asking Claude to do something with the MQTT broker (e.g. ask it to publish an MQTT message to a topic). 
 
