@@ -159,3 +159,35 @@ class EMQXClient:
             except Exception as e:
                 self.logger.error(f"Error retrieving client info for {clientid}: {str(e)}")
                 return {"error": str(e)}
+                
+    async def kick_client(self, clientid: str):
+        """
+        Kick out (disconnect) a client from the MQTT broker.
+        
+        Uses the EMQX HTTP API to forcibly disconnect a client identified by its client ID.
+        
+        Args:
+            clientid (str): The unique identifier of the client to disconnect
+            
+        Returns:
+            dict: Response from the EMQX API or error information
+        """
+        url = f"{self.api_url}/clients/{clientid}"
+        
+        self.logger.info(f"Kicking out client with ID: {clientid}")
+        
+        async with httpx.AsyncClient() as client:
+            try:
+                response = await client.delete(
+                    url,
+                    headers=self._get_auth_header(),
+                    timeout=30
+                )
+                response.raise_for_status()
+                # For successful delete operations, return a success message
+                if response.status_code == 204:  # No Content
+                    return {"success": True, "message": f"Client {clientid} has been disconnected"}
+                return self._handle_response(response)
+            except Exception as e:
+                self.logger.error(f"Error kicking out client {clientid}: {str(e)}")
+                return {"error": str(e)}

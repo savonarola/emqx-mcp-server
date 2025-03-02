@@ -92,3 +92,29 @@ class EMQXClientTools:
             
             self.logger.info(f"Client info for '{clientid}' retrieved successfully")
             return result 
+
+        @mcp.tool(name="kick_mqtt_client", 
+                  description="Disconnect a client from the MQTT broker by client ID")
+        async def kick_client(request):
+            """Handle kick client request
+            
+            Args:
+                request: MCP request containing client identifier
+                    - clientid: Client ID (required) - The unique identifier of the client to disconnect
+
+            Returns:
+                MCPResponse: Response object with the result of the disconnect operation
+            """
+            self.logger.info("Handling kick client request")
+            
+            # Extract required client ID parameter
+            clientid = request.get("clientid")
+            if not clientid:
+                self.logger.error("Client ID is required but was not provided")
+                return {"error": "Client ID is required"}
+            
+            # Kick client from EMQX
+            result = await self.emqx_client.kick_client(clientid)
+            
+            self.logger.info(f"Client '{clientid}' disconnect request processed")
+            return result 
