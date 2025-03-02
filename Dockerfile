@@ -12,7 +12,7 @@ ENV UV_COMPILE_BYTECODE=1
 RUN apk add --no-cache build-base libffi-dev
 
 # Copy dependency files
-COPY pyproject.toml uv.lock /app/
+COPY pyproject.toml uv.lock LICENSE README.md /app/
 
 # Install the project's dependencies using the lockfile
 # Uses cache mount to speed up builds
