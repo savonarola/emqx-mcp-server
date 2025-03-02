@@ -31,7 +31,3 @@ startCommand:
         EMQX_API_SECRET: config.emqxApiSecret
       }
     })
-  exampleConfig:
-    emqxApiUrl: https://your-emqx-cloud-instance.com:8443/api/v5
-    emqxApiKey: example-api-key
-    emqxApiSecret: example-api-secret
