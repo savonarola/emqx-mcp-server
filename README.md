@@ -55,11 +55,7 @@ Enabling MCP clients to interact with the MQTT clusters on [EMQX Cloud](https://
   - qos (number, optional): Quality of Service level (0, 1, or 2) (default: 0)
   - retain (boolean, optional): Whether to retain the message (default: false)
 
-## Running locally with the Claude Desktop App
-
-## Setup
-
-### Prerequisites
+## Setup EMQX Cluster
 
 Before using the EMQX MCP Server tools, you need to set up an EMQX cluster with properly configured API Key and client authentication. There are several options:
 
@@ -78,6 +74,8 @@ Before using the EMQX MCP Server tools, you need to set up an EMQX cluster with 
 4.  Self-hosted EMQX Platform:
 -   Download and deploy EMQX Platform locally
 -   Follow installation instructions at [EMQX Platform](https://www.emqx.com/en/try?tab=self-managed)
+
+## Running locally with the Claude Desktop App
 
 ### Manual Installation
 
