@@ -84,3 +84,48 @@ class EMQXClient:
             except Exception as e:
                 self.logger.error(f"Error publishing message: {str(e)}")
                 return {"error": str(e)}
+            
+    async def list_clients(self, params=None):
+        """
+        Get a list of connected MQTT clients.
+
+        Uses the EMQX HTTP API to retrieve information about connected clients.
+        
+        Args:
+            params (dict, optional): Query parameters to filter results:
+                - page: Page number (default: 1)
+                - limit: Results per page, max 10000 (default: 10)
+                - clientid: Client ID
+                - username: Username
+                - ip_address: Client IP address
+                - conn_state: Connection state
+                - clean_start: Clean start flag
+                - proto_ver: Protocol version
+                - like_clientid: Fuzzy search by client ID pattern
+                - like_username: Fuzzy search by username pattern
+                - like_ip_address: Fuzzy search by IP address pattern
+
+        Returns:
+            dict: Response from the EMQX API containing client data or error information
+        """
+        url = f"{self.api_url}/clients"
+
+        # Default params if none provided
+        if params is None:
+            params = {"page": 1, "limit": 10}
+
+        self.logger.info("Retrieving list of MQTT clients")
+
+        async with httpx.AsyncClient() as client:
+            try:
+                response = await client.get(
+                    url,
+                    headers=self._get_auth_header(),
+                    params=params,
+                    timeout=30
+                )
+                response.raise_for_status()
+                return self._handle_response(response)
+            except Exception as e:
+                self.logger.error(f"Error retrieving clients: {str(e)}")
+                return {"error": str(e)}

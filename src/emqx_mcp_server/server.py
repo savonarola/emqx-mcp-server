@@ -9,6 +9,7 @@ tools for clients to use.
 import logging
 from mcp.server.fastmcp import FastMCP
 from .tools.emqx_message_tools import EMQXMessageTools
+from .tools.emqx_client_tools import EMQXClientTools
 
 class EMQXMCPServer:
     """
@@ -36,9 +37,15 @@ class EMQXMCPServer:
         self._register_tools()
 
     def _register_tools(self):
+        # Register message tools
         emqx_message_tools = EMQXMessageTools(self.logger)
         emqx_message_tools.register_tools(self.mcp)
         self.logger.info("EMQX message tools registered")
+        
+        # Register client tools
+        emqx_client_tools = EMQXClientTools(self.logger)
+        emqx_client_tools.register_tools(self.mcp)
+        self.logger.info("EMQX client tools registered")
 
     def run(self):
         self.logger.info("Starting EMQX MCP Server")
