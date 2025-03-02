@@ -71,7 +71,7 @@ Before using the EMQX MCP Server tools, you need to set up an EMQX cluster with 
 -   Includes professional SLA and support
 -   Create a deployment at [EMQX Cloud Dedicated](https://www.emqx.com/en/cloud/dedicated)
 
-4.  Self-hosted EMQX Platform:
+3.  Self-hosted EMQX Platform:
 -   Download and deploy EMQX Platform locally
 -   Follow installation instructions at [EMQX Platform](https://www.emqx.com/en/try?tab=self-managed)
 
@@ -108,6 +108,91 @@ First, ensure you have the `uv` executable installed. If not, you can install it
 ```
 4. Open or Restart Claude Desktop App
 5. Try asking Claude to do something with the MQTT broker (e.g. ask it to publish an MQTT message to a topic). 
+
+## Example Prompts
+
+User: 
+```
+Please list the clients connected to the MQTT broker.
+```
+
+LLM: 
+```
+Here are the clients currently connected to your MQTT broker:
+Connected Client:
+  - Client ID: mqttx_2232bdb1
+  - Username: test
+  - Protocol: MQTT v5
+  ...
+There is currently 1 client connected to your MQTT broker. Would you like more detailed information about this specific client or would you like to perform another action with your MQTT broker?
+```
+
+User: 
+```
+Yes, please provide the detail info of this client. 
+```
+LLM: 
+```
+I'll retrieve the detailed information for this client for you.
+...
+Here's the detailed information for client "mqttx_2232bdb1":
+
+**Basic Information:**
+-   **Client ID:** mqttx_2232bdb1
+-   **Username:** test
+...
+**Connection Details:**
+-   **Connected:** Yes
+-   **Created At:** 2025-03-02T05:29:51.103+00:00
+...
+Would you like to perform any actions with this client, such as publishing a message to a topic or disconnecting the client?
+```
+
+User: 
+```
+Please write a poem and send it to the topic '/poem' with QoS 1.
+```
+LLM: 
+```
+I'll create a poem and publish it to the topic '/poem' with QoS 1. Let me do that for you.
+...
+I've successfully published the poem to the topic '/poem' with QoS 1. The message has been delivered with ID: 00062F55A1EFB1156ABC481240B30000.
+
+The poem I sent was:
+
+- Signals in the ether,
+- Invisible threads that bind,
+- Devices speak in whispers,
+- Across the digital divide.
+- Messages like leaves falling,
+- From cloud to waiting ground,
+- Connected yet untethered,
+- Where silence makes no sound.
+- Brokers of the modern age,
+- Routing dreams from here to there,
+- In this web of connections,
+- We find ourselves everywhere.
+- Like stars in constellation,
+- Each point of light has worth,
+- The language of machines,
+- Redefining our Earth.
+
+Is there anything else you'd like to do with your MQTT broker?
+```
+
+User: 
+```
+Please kick out the client mqttx_2232bdb1
+```
+LLM
+```
+I'll disconnect the client from the MQTT broker for you.
+...
+The client has been successfully disconnected. The system returned:
+> Client mqttx_2232bdb1 has been disconnected
+The MQTT client with ID "mqttx_2232bdb1" is now disconnected from your broker. Is there anything else you would like to do with your MQTT broker?
+```
+
 
 ## License
 This project is licensed under the Apache License Version 2.0 - see the [LICENSE](https://github.com/Benniu/emqx-mcp-server/blob/main/LICENSE) file for details.
