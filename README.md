@@ -1,4 +1,5 @@
 # EMQX MCP Server
+[![smithery badge](https://smithery.ai/badge/@Benniu/emqx-mcp-server)](https://smithery.ai/server/@Benniu/emqx-mcp-server)
 
 A [Model Context Protocol (MCP)](https://www.anthropic.com/news/model-context-protocol) server implementation that provides EMQX MQTT broker interaction.
 Enabling MCP clients to interact with the MQTT clusters on [EMQX Cloud](https://www.emqx.com/en/cloud/serverless-mqtt) or self-hosted clusters
@@ -77,7 +78,15 @@ Before using the EMQX MCP Server tools, you need to set up an EMQX cluster with 
 
 ## Running locally with the Claude Desktop App
 
-### Option 1: Docker
+### Option 1: Installing via Smithery
+
+To install emqx-mcp-server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@Benniu/emqx-mcp-server):
+
+```bash
+npx -y @smithery/cli install @Benniu/emqx-mcp-server --client claude
+```
+
+### Option 2: Docker
 
 1. Install [Claude Desktop App](https://claude.ai/download) if you haven't done so yet.
 2. Pull the image:
@@ -88,29 +97,29 @@ Before using the EMQX MCP Server tools, you need to set up an EMQX cluster with 
     - On MacOS: `~/Library/Application\ Support/Claude/claude_desktop_config.json`
     - On Windows: `%APPDATA%/Claude/claude_desktop_config.json`
 
-	```
-	{
-	  "mcpServers": {
-	    "EMQX_MCP_Server": {
-	      "command": "docker",
-	      "args": [
-	        "run",
-	        "-i",
-	        "--rm",
-	        "-e", "EMQX_API_URL=https://your-emqx-cloud-instance.com:8443/api/v5",
-	        "-e", "EMQX_API_KEY=<YOUR-API-KEY>",
-	        "-e", "EMQX_API_SECRET=<YOUR-API-SECRET>",
-	        "benniuji/emqx-mcp-server"
-	      ]
-	    }
-	  }
-	}
-	```
+    ```
+    {
+      "mcpServers": {
+        "EMQX_MCP_Server": {
+          "command": "docker",
+          "args": [
+            "run",
+            "-i",
+            "--rm",
+            "-e", "EMQX_API_URL=https://your-emqx-cloud-instance.com:8443/api/v5",
+            "-e", "EMQX_API_KEY=<YOUR-API-KEY>",
+            "-e", "EMQX_API_SECRET=<YOUR-API-SECRET>",
+            "benniuji/emqx-mcp-server"
+          ]
+        }
+      }
+    }
+    ```
     Note: Update the env variables:```EMQX_API_URL```, ```EMQX_API_KEY```, ```EMQX_API_SECRET```
 4. Open or Restart Claude Desktop App
 5. Try asking Claude to do something with the MQTT broker (e.g. ask it to publish an MQTT message to a topic). 
 
-### Option 2: Manual Installation
+### Option 3: Manual Installation
 
 First, ensure you have the `uv` executable installed. If not, you can install it by following the instructions [here](https://docs.astral.sh/uv/).
 
