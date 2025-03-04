@@ -148,7 +148,7 @@ First, ensure you have the `uv` executable installed. If not, you can install it
       }
     }
     ```
-    Note: Update the env variables:```EMQX_API_URL```, ```EMQX_API_KEY```, ```EMQX_API_SECRET```
+    Note: Make sure to update ```path/to/repo/src/emqx_mcp_server``` to the actual path and modify the environment variables ```EMQX_API_URL```, ```EMQX_API_KEY```, and ```EMQX_API_SECRET``` to match your EMQX instance.
 4. Open or Restart Claude Desktop App
 5. Try asking Claude to do something with the MQTT broker (e.g. ask it to publish an MQTT message to a topic). 
 
