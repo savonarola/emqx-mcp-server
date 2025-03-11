@@ -1,6 +1,10 @@
 # EMQX MCP Server
 [![smithery badge](https://smithery.ai/badge/@Benniu/emqx-mcp-server)](https://smithery.ai/server/@Benniu/emqx-mcp-server)
 
+<a href="https://glama.ai/mcp/servers/m7zgbcr053">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/m7zgbcr053/badge" alt="emqx-mcp-server MCP server" />
+</a>
+
 A [Model Context Protocol (MCP)](https://www.anthropic.com/news/model-context-protocol) server implementation that provides EMQX MQTT broker interaction.
 Enabling MCP clients to interact with the MQTT clusters on [EMQX Cloud](https://www.emqx.com/en/cloud/serverless-mqtt) or self-hosted clusters
 
