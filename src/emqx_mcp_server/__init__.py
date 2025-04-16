@@ -12,5 +12,6 @@ def main():
     server = EMQXMCPServer()
     server.run()
 
+
 if __name__ == "__main__":
     main()

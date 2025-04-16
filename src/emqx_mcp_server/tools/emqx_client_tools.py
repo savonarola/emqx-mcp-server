@@ -8,19 +8,20 @@ to use through the MCP protocol.
 
 import logging
 from typing import Any
+
 from ..emqx_client import EMQXClient
 
+
 class EMQXClientTools:
-    
+
     def __init__(self, logger: logging.Logger):
         self.logger = logger
         self.emqx_client = EMQXClient(logger)
 
     def register_tools(self, mcp: Any):
         """Register EMQX Client management tools."""
-        
-        @mcp.tool(name="list_mqtt_clients", 
-                  description="List MQTT clients connected to your EMQX Cluster")
+
+        @mcp.tool(name="list_mqtt_clients")
         async def list_clients(request):
             """Handle list clients request
             
@@ -43,31 +44,31 @@ class EMQXClientTools:
                 MCPResponse: Response object with list of clients
             """
             self.logger.info("Handling list clients request")
-            
+
             # Extract optional parameters from the request with defaults
             params = {
                 "page": request.get("page", 1),
                 "limit": request.get("limit", 100)
             }
-            
+
             # Optional parameters to include if present
             optional_params = [
-                "node", "clientid", "username", "ip_address", "conn_state", 
-                "clean_start", "proto_ver", "like_clientid", "like_username", 
+                "node", "clientid", "username", "ip_address", "conn_state",
+                "clean_start", "proto_ver", "like_clientid", "like_username",
                 "like_ip_address"
             ]
-            
+
             for param in optional_params:
                 if param in request:
                     params[param] = request.get(param)
-            
-            # Get list of clients from EMQX
-            result = await self.emqx_client.list_clients(params)
-            
-            self.logger.info("Client list retrieved successfully")
-            return result 
 
-        @mcp.tool(name="get_mqtt_client", 
+            # Get list of clients from EMQX
+            result = await self.emqx_client.get("clients", params=params)
+
+            self.logger.info("Client list retrieved successfully")
+            return result
+
+        @mcp.tool(name="get_mqtt_client",
                   description="Get detailed information about a specific MQTT client by client ID")
         async def get_client_info(request):
             """Handle get client info request
@@ -80,20 +81,20 @@ class EMQXClientTools:
                 MCPResponse: Response object with detailed client information
             """
             self.logger.info("Handling get client info request")
-            
+
             # Extract required client ID parameter
             clientid = request.get("clientid")
             if not clientid:
                 self.logger.error("Client ID is required but was not provided")
                 return {"error": "Client ID is required"}
-            
-            # Get client information from EMQX
-            result = await self.emqx_client.get_client_info(clientid)
-            
-            self.logger.info(f"Client info for '{clientid}' retrieved successfully")
-            return result 
 
-        @mcp.tool(name="kick_mqtt_client", 
+            # Get client information from EMQX
+            result = await self.emqx_client.get(f"clients/{clientid}")
+
+            self.logger.info(f"Client info for '{clientid}' retrieved successfully")
+            return result
+
+        @mcp.tool(name="kick_mqtt_client",
                   description="Disconnect a client from the MQTT broker by client ID")
         async def kick_client(request):
             """Handle kick client request
@@ -106,15 +107,15 @@ class EMQXClientTools:
                 MCPResponse: Response object with the result of the disconnect operation
             """
             self.logger.info("Handling kick client request")
-            
+
             # Extract required client ID parameter
             clientid = request.get("clientid")
             if not clientid:
                 self.logger.error("Client ID is required but was not provided")
                 return {"error": "Client ID is required"}
-            
+
             # Kick client from EMQX
-            result = await self.emqx_client.kick_client(clientid)
-            
+            result = await self.emqx_client.delete(f"clients/{clientid}")
+
             self.logger.info(f"Client '{clientid}' disconnect request processed")
-            return result 
+            return result
